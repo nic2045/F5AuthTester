@@ -3,12 +3,20 @@ requires = ["setuptools>=68", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "pyshell-starter"
+name = "f5authtester"
 version = "0.2.0"
-description = "Modern starter template for projects that ship Python and PowerShell side by side"
+description = "Web dashboard that checks F5 BIG-IP APM Secure Hybrid Access SSO variants (KCD, Header, Forms, SAML, NTLM, OAuth) end-to-end and via iControl REST"
 readme = "README.md"
 requires-python = ">=3.10"
 license = { file = "LICENSE" }
+dependencies = [
+    "fastapi>=0.111",
+    "uvicorn[standard]>=0.30",
+    "httpx>=0.27",
+    "jinja2>=3.1",
+    "pydantic>=2.7",
+    "pyyaml>=6.0",
+]
 
 [project.optional-dependencies]
 dev = [
@@ -16,8 +24,14 @@ dev = [
     "pytest>=8",
 ]
 
+[project.scripts]
+f5authtester = "f5authtester.__main__:main"
+
 [tool.setuptools.packages.find]
 where = ["src"]
+
+[tool.setuptools.package-data]
+f5authtester = ["web/templates/*.html", "web/static/*"]
 
 [tool.ruff]
 line-length = 100

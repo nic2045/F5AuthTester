@@ -1,0 +1,71 @@
+# F5AuthTester configuration example.
+#
+# Copy to config.yaml (or point F5AUTHTESTER_CONFIG at it) and adapt.
+# Any ${VAR} is replaced from the environment at load time — keep secrets in env vars,
+# never in this file.
+
+# How often the background scheduler re-runs all checks (seconds). Minimum effective 15s.
+poll_interval_s: 300
+user_agent: "F5AuthTester/0.2"
+
+# Global BIG-IP iControl REST connection. Used by the iControl check for every target.
+# Leave enabled: false to run active probes only.
+f5:
+  enabled: false
+  host: "bigip.corp.example.com"      # management address / hostname
+  username: "svc-f5authtester"
+  password: "${F5_PASSWORD}"          # set F5_PASSWORD in the environment
+  verify_tls: true
+  timeout_s: 15
+
+# One entry per published application you want to monitor.
+targets:
+  - name: "Intranet (KCD)"
+    variant: kerberos_kcd
+    url: "https://intranet.corp.example.com/"
+    probe:
+      # Unauthenticated request should bounce to Entra ID — that proves the SHA front door.
+      expect_entra_redirect: true
+    apm:
+      access_profile: "ap_intranet"
+      sso_config: "kcd_intranet"       # tmsh: apm sso kerberos
+
+  - name: "HR Portal (Header)"
+    variant: header
+    url: "https://hr.corp.example.com/"
+    apm:
+      access_profile: "ap_hr"          # header SSO uses HTTP header rules, no SSO object
+
+  - name: "Legacy App (Forms)"
+    variant: forms
+    url: "https://legacy.corp.example.com/login"
+    apm:
+      access_profile: "ap_legacy"
+      sso_config: "form_legacy"        # tmsh: apm sso form-based
+
+  - name: "Partner SP (SAML)"
+    variant: saml
+    url: "https://partner.corp.example.com/"
+    apm:
+      access_profile: "ap_partner"
+      sso_config: "saml_partner"       # tmsh: apm sso saml
+
+  - name: "SharePoint (NTLM)"
+    variant: ntlm
+    url: "https://sp.corp.example.com/"
+    apm:
+      access_profile: "ap_sp"
+      sso_config: "ntlm_sp"            # tmsh: apm sso ntlmv2
+
+  # Example of an authenticated end-to-end probe: supply a bearer token and a success marker
+  # so the probe confirms the backend actually accepted the OAuth SSO.
+  - name: "API Gateway (OAuth)"
+    variant: oauth
+    url: "https://api.corp.example.com/whoami"
+    probe:
+      expect_entra_redirect: false
+      bearer_token: "${API_BEARER_TOKEN}"
+      success_markers: ["\"authenticated\": true"]
+    apm:
+      access_profile: "ap_api"
+      sso_config: "oauth_api"          # tmsh: apm sso oauth-bearer

@@ -7,7 +7,7 @@
   "bump-patch-for-minor-pre-major": true,
   "packages": {
     ".": {
-      "package-name": "pyshell-starter",
+      "package-name": "f5authtester",
       "extra-files": [
         {
           "type": "toml",
@@ -16,11 +16,11 @@
         },
         {
           "type": "generic",
-          "path": "powershell/PyShellStarter.psd1"
+          "path": "powershell/F5AuthTester.psd1"
         },
         {
           "type": "generic",
-          "path": "src/pyshell_starter/__init__.py"
+          "path": "src/f5authtester/__init__.py"
         }
       ]
     }

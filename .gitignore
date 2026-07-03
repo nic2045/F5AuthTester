@@ -216,3 +216,6 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Local F5AuthTester runtime config (may contain internal hostnames)
+config.yaml

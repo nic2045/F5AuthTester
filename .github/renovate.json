@@ -1,0 +1,59 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended",
+    ":semanticCommits",
+    ":dependencyDashboard"
+  ],
+  "schedule": [
+    "before 6am on monday"
+  ],
+  "timezone": "Etc/UTC",
+  "labels": [
+    "dependencies"
+  ],
+  "prHourlyLimit": 0,
+  "prConcurrentLimit": 0,
+  "packageRules": [
+    {
+      "matchManagers": [
+        "github-actions"
+      ],
+      "groupName": "github-actions",
+      "semanticCommitType": "ci",
+      "semanticCommitScope": "deps",
+      "automerge": true,
+      "automergeType": "pr",
+      "platformAutomerge": true
+    },
+    {
+      "matchManagers": [
+        "pip_requirements",
+        "pip_setup",
+        "pep621"
+      ],
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ],
+      "groupName": "python-minor-patch",
+      "semanticCommitType": "build",
+      "semanticCommitScope": "deps",
+      "automerge": true,
+      "automergeType": "pr",
+      "platformAutomerge": true
+    },
+    {
+      "matchManagers": [
+        "pip_requirements",
+        "pip_setup",
+        "pep621"
+      ],
+      "matchUpdateTypes": [
+        "major"
+      ],
+      "semanticCommitType": "build",
+      "semanticCommitScope": "deps"
+    }
+  ]
+}

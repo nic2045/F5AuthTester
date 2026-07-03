@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "f5authtester"
-version = "0.2.0"
+version = "0.2.1"
 description = "Web dashboard that checks F5 BIG-IP APM Secure Hybrid Access SSO variants (KCD, Header, Forms, SAML, NTLM, OAuth) end-to-end and via iControl REST"
 readme = "README.md"
 requires-python = ">=3.10"
